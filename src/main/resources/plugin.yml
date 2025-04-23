@@ -1,0 +1,12 @@
+name: UnanimousSleep
+version: '1.0-SNAPSHOT'
+main: me.stuffy.unanimousSleep.UnanimousSleepPlugin
+api-version: '1.21'
+authors: [ Stuffy ]
+description: Allows Players to cancel world sleep if they want.
+depend: [ 'ProtocolLib' ]
+commands:
+  cancelsleep:
+    description: Cancels the sleep of the player.
+    usage: /<command>
+    permission: unanimoussleep.cancelsleep
