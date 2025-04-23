@@ -19,4 +19,4 @@ There is one permission node for players that allows players to cancel sleep.
 5. Restart your server
 
 ## Contributors
-- [Stuffy](github.com/stuffyerface)
+- [Stuffy](https://github.com/stuffyerface)
