@@ -10,3 +10,6 @@ commands:
     description: Cancels the sleep of the player.
     usage: /<command>
     permission: unanimoussleep.cancelsleep
+    aliases:
+      - nosleep
+      - ns

@@ -1,7 +1,10 @@
 package me.stuffy.unanimousSleep;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -48,11 +51,19 @@ public class SleepManager {
             // Someone is already trying to sleep in this world
             return;
         }
-        Component actionBar = Component.text()
-                .append(Component.text(player.getName()))
-                .append(Component.text(" is sleeping through this night. "))
-                .append(Component.text("/cancelsleep").color(NamedTextColor.RED))
-                .append(Component.text(" to cancel."))
+        Component chatNotification = Component.text()
+                .append(Component.text(player.getName()).color(NamedTextColor.GRAY))
+                .append(Component.text(" is sleeping through this night. ").color(NamedTextColor.GRAY))
+                .append(Component.text("Click").color(NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD).clickEvent(
+                        ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/cancelsleep")
+                ).hoverEvent(
+                        HoverEvent.showText(
+                                Component.text()
+                                        .append(Component.text("Click here to cancel sleep.\n").color(NamedTextColor.YELLOW))
+                                        .append(Component.text("Runs /cancelsleep.").color(NamedTextColor.GRAY))
+                        )
+                ))
+                .append(Component.text(" to cancel.").color(NamedTextColor.GRAY))
                 .build();
 
         world.getPlayers().forEach(playerInWorld -> {
@@ -60,7 +71,7 @@ public class SleepManager {
                         playerInWorld.sendActionBar(Component.text("Sleeping through this night. "));
                         return;
                     }
-                    playerInWorld.sendActionBar(actionBar);
+                    playerInWorld.sendMessage(chatNotification);
                 });
 
         attemptingToSleep.put(world, player);
