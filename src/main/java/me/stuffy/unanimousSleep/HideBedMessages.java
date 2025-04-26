@@ -18,11 +18,6 @@ public class HideBedMessages {
         plugin.getProtocolManager().addPacketListener(new PacketAdapter(plugin, PacketType.Play.Server.SYSTEM_CHAT) {
             @Override
             public void onPacketSending(PacketEvent event) {
-                String packetName = event.getPacket().getType().name();
-
-                if (!packetName.equals("SYSTEM_CHAT")) {
-                    return;
-                }
 
                 boolean overlay = event.getPacket().getBooleans().read(0);
                 if (!overlay) {
