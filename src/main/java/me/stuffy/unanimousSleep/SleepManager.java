@@ -8,11 +8,12 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class SleepManager {
     private final UnanimousSleepPlugin plugin;
-    private final Map<World, Player> attemptingToSleep = new HashMap<>();
-    private final Map<World, BukkitTask> skipNightTasks = new HashMap<>();
+    private final Map<UUID, Player> attemptingToSleep = new HashMap<>();
+    private final Map<UUID, BukkitTask> skipNightTasks = new HashMap<>();
 
 
     public SleepManager(UnanimousSleepPlugin plugin) {
@@ -20,13 +21,14 @@ public class SleepManager {
     }
 
     public void cancelSleepCommand(Player player, World world) {
-        if(!attemptingToSleep.containsKey(world)) {
+        UUID worldId = world.getUID();
+        if(!attemptingToSleep.containsKey(worldId)) {
             // No one is trying to sleep in this world
             player.sendMessage("There is no sleep to cancel right now.");
             return;
         }
 
-        if(attemptingToSleep.get(world) == player) {
+        if(attemptingToSleep.get(worldId) == player) {
             player.sendMessage("You can't cancel your own sleep.");
             return;
         }
@@ -40,11 +42,12 @@ public class SleepManager {
         player.getWorld().getPlayers().forEach(playerInWorld -> {
             playerInWorld.sendActionBar(actionBar);
         });
-        attemptingToSleep.remove(world);
+        attemptingToSleep.remove(worldId);
     }
 
     public void tryToSleep(Player player, World world) {
-        if(attemptingToSleep.containsKey(world)) {
+        UUID worldId = world.getUID();
+        if(attemptingToSleep.containsKey(worldId)) {
             // Someone is already trying to sleep in this world
             return;
         }
@@ -63,13 +66,14 @@ public class SleepManager {
                     playerInWorld.sendActionBar(actionBar);
                 });
 
-        attemptingToSleep.put(world, player);
+        attemptingToSleep.put(worldId, player);
 
-        skipNightTasks.put(world, plugin.getServer().getScheduler().runTaskLater(plugin, () -> skipNight(world), 100L));
+        skipNightTasks.put(worldId, plugin.getServer().getScheduler().runTaskLater(plugin, () -> skipNight(world), 100L));
     }
 
     public void exitBed(Player player, World world) {
-        if(!attemptingToSleep.containsKey(world) || !attemptingToSleep.get(world).equals(player)) {
+        UUID worldId = world.getUID();
+        if(!attemptingToSleep.containsKey(worldId) || !attemptingToSleep.get(worldId).equals(player)) {
             return;
         }
         cancelSleepTask(world);
@@ -88,17 +92,19 @@ public class SleepManager {
     }
 
     private void skipNight(World world) {
-        attemptingToSleep.remove(world);
+        UUID worldId = world.getUID();
+        attemptingToSleep.remove(worldId);
 //        plugin.getLogger().info("Skipping night in world " + world.getName());
         world.setTime(0); // Set time to day
     }
 
     private void cancelSleepTask(World world) {
-        attemptingToSleep.remove(world);
-        BukkitTask task = skipNightTasks.get(world);
+        UUID worldId = world.getUID();
+        attemptingToSleep.remove(worldId);
+        BukkitTask task = skipNightTasks.get(worldId);
         if (task != null) {
             task.cancel();
-            skipNightTasks.remove(world);
+            skipNightTasks.remove(worldId);
         } else {
             plugin.getLogger().warning("No sleep task found for world " + world.getName());
         }
