@@ -96,6 +96,12 @@ public class SleepManager {
         attemptingToSleep.remove(worldId);
 //        plugin.getLogger().info("Skipping night in world " + world.getName());
         world.setTime(0); // Set time to day
+
+        // Clear weather if raining or thundering
+        if(!world.isClearWeather()){
+            world.setStorm(false);
+            world.setThundering(false);
+        }
     }
 
     private void cancelSleepTask(World world) {
