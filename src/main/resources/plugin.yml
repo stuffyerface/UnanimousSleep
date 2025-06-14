@@ -1,5 +1,5 @@
 name: UnanimousSleep
-version: '1.0.1'
+version: '1.0.2'
 main: me.stuffy.unanimousSleep.UnanimousSleepPlugin
 api-version: '1.21'
 authors: [ Stuffy ]
