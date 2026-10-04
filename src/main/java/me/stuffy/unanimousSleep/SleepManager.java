@@ -58,7 +58,7 @@ public class SleepManager {
                 .append(Component.text(player.getName()).color(NamedTextColor.GRAY))
                 .append(Component.text(" is sleeping through this night. ").color(NamedTextColor.GRAY))
                 .append(Component.text("Click").color(NamedTextColor.DARK_AQUA).decorate(TextDecoration.BOLD).clickEvent(
-                        ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/cancelsleep")
+                        ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, ClickEvent.Payload.string("/cancelsleep"))
                 ).hoverEvent(
                         HoverEvent.showText(
                                 Component.text()
