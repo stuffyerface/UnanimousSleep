@@ -2,7 +2,7 @@ package me.stuffy.unanimousSleep;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class UnanimousSleepPlugin extends JavaPlugin {
@@ -18,7 +18,7 @@ public final class UnanimousSleepPlugin extends JavaPlugin {
         // Set game rule
         getServer().getWorlds().forEach(world -> {
             if (world.getEnvironment() == org.bukkit.World.Environment.NORMAL) {
-                world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, 101);
+                world.setGameRule(GameRules.PLAYERS_SLEEPING_PERCENTAGE, 101);
                 getLogger().info("Set vanilla player sleeping percentage in `" + world.getName() + "` to impossible.");
             }
         });
